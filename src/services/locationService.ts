@@ -1,35 +1,40 @@
 import axios from 'axios';
 
-// 인근 학교 및 편의점 검색
+import { calculateWalkingTime } from '../utils/calculateWalkingTime';
+import { DEFINE } from '../constants/location';
+
+import { Facility, FacilitySearchResults } from '../types/location';
+
 export const searchNearbyFacilities = async (
   latitude: number,
-  longitude: number
-) => {
+  longitude: number,
+  walkingTimeLimit: number
+): Promise<FacilitySearchResults> => {
   try {
-    // 학교
-    const schoolsResponse = await axios.get(
-      'https://dapi.kakao.com/v2/local/search/keyword.json',
-      {
-        headers: { Authorization: `KakaoAK ${process.env.KAKAO_API_KEY}` },
-        params: { query: '학교', x: longitude, y: latitude, radius: 1000 },
-      }
-    );
+    const results: FacilitySearchResults = {};
 
-    // 편의점
-    const storesResponse = await axios.get(
-      'https://dapi.kakao.com/v2/local/search/keyword.json',
-      {
-        headers: { Authorization: `KakaoAK ${process.env.KAKAO_API_KEY}` },
-        params: { query: '편의점', x: longitude, y: latitude, radius: 1000 },
-      }
-    );
+    for (const key in DEFINE.QUERY) {
+      const response = await axios.get<{ documents: Facility[] }>(
+        'https://dapi.kakao.com/v2/local/search/keyword.json',
+        {
+          headers: { Authorization: `KakaoAK ${process.env.KAKAO_API_KEY}` },
+          params: {
+            query: DEFINE.QUERY[key],
+            x: longitude,
+            y: latitude,
+            radius: 2000,
+          },
+        }
+      );
 
-    // TODO: 시간 계산 및 정렬
+      results[key] = response.data.documents.filter(document => {
+        const walkingTime = calculateWalkingTime(parseInt(document.distance));
+        return true;
+        return walkingTime <= walkingTimeLimit;
+      });
+    }
 
-    return {
-      schools: schoolsResponse.data.documents,
-      stores: storesResponse.data.documents,
-    };
+    return results;
   } catch (error) {
     console.error(error);
     throw error;
