@@ -3,6 +3,6 @@ import { findNearbyPlaces } from '../controllers/locationController';
 
 const router = express.Router();
 
-router.post('/nearby-places', findNearbyPlaces);
+router.get('/nearby-places', findNearbyPlaces);
 
 export default router;
