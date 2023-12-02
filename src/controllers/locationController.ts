@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { searchNearbyFacilities } from '../services/locationService';
+import { searchNearbyFacilities } from '@/services/locationService';
 
 export const findNearbyPlaces = async (req: Request, res: Response) => {
   try {
