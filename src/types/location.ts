@@ -10,11 +10,21 @@ interface Define {
 interface Facility {
   id: string;
   place_name: string;
-  distance: 5 | 10 | 15 | 20 | null;
+  distance: number | null;
+}
+
+interface FacilityResult {
+  id: string;
+  place_name: string;
+  distance: number | null;
 }
 
 interface FacilitySearchResults {
-  [key: string]: Facility;
+  [key: string]: {
+    id: string;
+    place_name: string;
+    distance: number | null;
+  };
 }
 
-export { Define, Facility, FacilitySearchResults };
+export { Define, Facility, FacilityResult, FacilitySearchResults };
