@@ -9,19 +9,13 @@ export const searchNearbyFacilities = async (
   try {
     const results: FacilitySearchResults = {};
 
-    for (const category in DEFINE.CATEGORY_GROUP_CODE) {
-      results[category] = await processFacilities(
-        'category',
-        DEFINE.CATEGORY_GROUP_CODE[category],
-        longitude,
-        latitude
-      );
-    }
+    for (const key in DEFINE.ITEMS) {
+      const item = DEFINE.ITEMS[key];
 
-    for (const keyword in DEFINE.QUERY) {
-      results[keyword] = await processFacilities(
-        'keyword',
-        DEFINE.QUERY[keyword],
+      results[key] = await processFacilities(
+        item.type,
+        item.id,
+        item.name,
         longitude,
         latitude
       );

@@ -1,20 +1,25 @@
+type DefineKey = keyof Define['ITEMS'];
+
 interface Define {
-  CATEGORY_GROUP_CODE: {
-    [key: string]: string;
-  };
-  QUERY: {
-    [key: string]: string;
+  ITEMS: {
+    [key: string]: {
+      type: DefineKey;
+      id: string;
+      name: string;
+    };
   };
 }
 
 interface Facility {
   id: string;
+  name: string;
   place_name: string;
   distance: number | null;
 }
 
 interface FacilityResult {
   id: string;
+  name: string;
   place_name: string;
   distance: number | null;
 }
@@ -27,4 +32,4 @@ interface FacilitySearchResults {
   };
 }
 
-export { Define, Facility, FacilityResult, FacilitySearchResults };
+export { Define, DefineKey, Facility, FacilityResult, FacilitySearchResults };

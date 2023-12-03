@@ -1,10 +1,10 @@
 import { AxiosResponse } from 'axios';
 import { createKakaoApiInstance } from './createKakaoApiInstance';
-import { Facility } from '@/types/location';
+import { DefineKey, Facility } from '@/types/location';
 import { RADIUS } from '@/constants/location';
 
 export const fetchFacilities = async (
-  type: 'category' | 'keyword',
+  type: DefineKey,
   query: string,
   longitude: number,
   latitude: number
