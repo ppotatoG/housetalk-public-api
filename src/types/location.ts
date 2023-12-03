@@ -1,4 +1,4 @@
-type DefineKey = keyof Define['ITEMS'];
+type DefineKey = 'category' | 'keyword';
 
 interface Define {
   ITEMS: {
@@ -17,19 +17,8 @@ interface Facility {
   distance: number | null;
 }
 
-interface FacilityResult {
-  id: string;
-  name: string;
-  place_name: string;
-  distance: number | null;
-}
-
 interface FacilitySearchResults {
-  [key: string]: {
-    id: string;
-    place_name: string;
-    distance: number | null;
-  };
+  [key: string]: Facility;
 }
 
-export { Define, DefineKey, Facility, FacilityResult, FacilitySearchResults };
+export { Define, DefineKey, Facility, FacilitySearchResults };

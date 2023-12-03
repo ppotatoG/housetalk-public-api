@@ -1,4 +1,4 @@
-import { DefineKey, FacilityResult } from '@/types/location';
+import { DefineKey, Facility } from '@/types/location';
 import { WALKING_LIMIT } from '@/constants/location';
 import { calculateWalkingDistance } from '@/utils/calculateWalkingTime';
 import { fetchFacilities } from './fetchFacilities';
@@ -10,11 +10,11 @@ export const processFacilities = async (
   name: string,
   longitude: number,
   latitude: number
-): Promise<FacilityResult> => {
+): Promise<Facility> => {
   const facilities = await fetchFacilities(type, id, longitude, latitude);
   const { closestFacility, minimumDistance } = findClosestFacility(facilities);
 
-  const result: FacilityResult = {
+  const result: Facility = {
     id: id,
     name: name,
     place_name: '',
