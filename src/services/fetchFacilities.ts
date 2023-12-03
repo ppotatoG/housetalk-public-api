@@ -10,12 +10,12 @@ export const fetchFacilities = async (
   latitude: number
 ): Promise<Facility[]> => {
   const kakaoApi = createKakaoApiInstance();
-
   try {
+    const paramKey = type === 'category' ? 'category_group_code' : 'query';
     const response: AxiosResponse<{ documents: Facility[] }> =
       await kakaoApi.get(`/${type}.json`, {
         params: {
-          [type === 'category' ? 'category_group_code' : 'query']: query,
+          [paramKey]: query,
           x: longitude,
           y: latitude,
           radius: RADIUS,
@@ -24,7 +24,7 @@ export const fetchFacilities = async (
 
     return response.data.documents;
   } catch (error) {
-    console.error('Error fetching facilities:', error);
+    console.error(`Error fetching facilities (${type}):`, error);
     throw error;
   }
 };

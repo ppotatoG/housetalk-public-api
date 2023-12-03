@@ -7,19 +7,29 @@ export const searchNearbyFacilities = async (
   longitude: number
 ): Promise<FacilitySearchResults> => {
   try {
+    const facilityPromises = Object.entries(DEFINE.ITEMS).map(([key, item]) =>
+      processFacilities(item.type, item.id, item.name, longitude, latitude)
+        .then(result => ({ key, result }))
+        .catch(error => {
+          console.error(`Error processing ${key}:`, error);
+          return {
+            key,
+            result: {
+              id: item.id,
+              name: item.name,
+              place_name: '',
+              distance: null,
+            },
+          };
+        })
+    );
+
+    const facilities = await Promise.all(facilityPromises);
     const results: FacilitySearchResults = {};
 
-    for (const key in DEFINE.ITEMS) {
-      const item = DEFINE.ITEMS[key];
-
-      results[key] = await processFacilities(
-        item.type,
-        item.id,
-        item.name,
-        longitude,
-        latitude
-      );
-    }
+    facilities.forEach(({ key, result }) => {
+      results[key] = result;
+    });
 
     return results;
   } catch (error) {

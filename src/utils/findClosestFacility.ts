@@ -1,18 +1,22 @@
 import { Facility } from '@/types/location';
 
+interface FindClosestFacilityType {
+  closestFacility: Facility | null;
+  minimumDistance: number;
+}
+
 export const findClosestFacility = (
   facilities: Facility[]
-): { closestFacility: Facility | null; minimumDistance: number } => {
-  let closestFacility: Facility | null = null;
-  let minimumDistance = Infinity;
-
-  facilities.forEach(facility => {
-    const distance = Number(facility.distance);
-    if (distance && distance < minimumDistance) {
-      minimumDistance = distance;
-      closestFacility = facility;
-    }
-  });
-
-  return { closestFacility, minimumDistance };
+): FindClosestFacilityType => {
+  return facilities.reduce<FindClosestFacilityType>(
+    (closest, facility) => {
+      const distance =
+        facility.distance !== null ? Number(facility.distance) : Infinity;
+      if (distance < closest.minimumDistance) {
+        return { closestFacility: facility, minimumDistance: distance };
+      }
+      return closest;
+    },
+    { closestFacility: null, minimumDistance: Infinity }
+  );
 };
