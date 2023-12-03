@@ -12,3 +12,27 @@ cd housetalk-public-api
 npm install
 # .env.local에 KAKAO_API_KEY 설정
 npm run dev # 개발 서버 실행
+```
+
+## API 사용 예시
+
+### 주변 시설 검색
+
+요청
+
+```http
+GET http://localhost:8080/api/nearby-places?latitude=37.4979&longitude=127.0276
+```
+
+반환 타입 (FacilitySearchResults):
+
+```typescript
+interface FacilitySearchResults {
+  [key: string]: {
+    id: string;
+    name: string;
+    place_name: string;
+    distance: number | null;
+  };
+}
+```
